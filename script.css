@@ -21,7 +21,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = 'https://hussaindev10.github.io/Post/';
+        window.location.href = 'https://hussaindev10.github.io/posts/';
     } catch (error) {
         console.error('خطأ في تسجيل الدخول:', error.message);
         alert('فشل تسجيل الدخول: ' + error.message);
@@ -34,7 +34,7 @@ document.getElementById('sign-up-button').addEventListener('click', async () => 
 
     try {
         await createUserWithEmailAndPassword(auth, email, password);
-        window.location.href = 'https://hussaindev10.github.io/Post/';
+        window.location.href = 'https://hussaindev10.github.io/posts/';
     } catch (error) {
         console.error('خطأ في إنشاء الحساب:', error.message);
         alert('فشل إنشاء الحساب: ' + error.message);
