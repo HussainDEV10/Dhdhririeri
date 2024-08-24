@@ -10,7 +10,7 @@ const firebaseConfig = {
   appId: "1:865676249313:web:8c19b685c42db47ad2cfa0",
   measurementId: "G-V7RQWTVDLG"
 };
-const app = initializeApp(firebaseConfig);
+const app = initial izeApp(firebaseConfig);
 const auth = getAuth(app);
 
 document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -20,13 +20,13 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = 'https://hussaindev10.github.io/posts/';
+        localStorage.setItem('userEmail', email);  // حفظ البريد الإلكتروني في localStorage
+        window.location.href = 'https://hussaindev10.github.io/posts/?';
     } catch (error) {
         console.error('خطأ في تسجيل الدخول:', error.message);
         alert('فشل تسجيل الدخول: ' + error.message);
     }
 });
-
 document.getElementById('sign-up-button').addEventListener('click', async () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
