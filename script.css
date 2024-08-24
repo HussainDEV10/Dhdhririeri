@@ -38,7 +38,7 @@ loginForm.addEventListener('submit', async (e) => {
     try {
         await signInWithEmailAndPassword(auth, email, password);
         showMessage('تم تسجيل الدخول بنجاح');
-        window.location.href = 'https://hussaindev10.github.io/posts/';
+        window.location.href = 'https://hussaindev10.github.io/posts/?';
     } catch (error) {
         showMessage('فشل تسجيل الدخول: ' + error.message);
     }
@@ -57,7 +57,7 @@ signUpButton.addEventListener('click', async () => {
     try {
         await createUserWithEmailAndPassword(auth, email, password);
         showMessage('تم إنشاء الحساب بنجاح');
-        window.location.href = 'https://hussaindev10.github.io/posts/';
+        window.location.href = 'https://hussaindev10.github.io/posts/?';
     } catch (error) {
         showMessage('فشل إنشاء الحساب: ' + error.message);
     }
