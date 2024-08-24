@@ -33,7 +33,7 @@ document.getElementById('sign-up-button').addEventListener('click', async () => 
 
     try {
         await createUserWithEmailAndPassword(auth, email, password);
-        window.location.href = 'https://hussaindev10.github.io/posttest/';
+        window.location.href = 'https://hussaindev10.github.io/posttest/?';
     } catch (error) {
         console.error('خطأ في إنشاء الحساب:', error.message);
         alert('فشل إنشاء الحساب: ' + error.message);
