@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Rubik', Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,4 +51,4 @@ button:hover {
 }
 .message {
     text-align: center;
-}
+    }
