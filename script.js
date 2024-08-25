@@ -39,7 +39,7 @@ loginBtn.addEventListener('click', async () => {
             localStorage.setItem('username', username);
 
             // التبديل إلى صفحة المنشورات
-            window.location.href = 'index.html';
+            window.location.href = 'https://hussaindev10.github.io/posttest/';
         } catch (error) {
             console.error("خطأ في تسجيل الدخول: ", error);
         }
