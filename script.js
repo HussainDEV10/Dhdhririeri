@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
@@ -14,64 +13,29 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 
-const loginBtn = document.getElementById('loginBtn');
-const signupBtn = document.getElementById('signupBtn');
-const usernameInput = document.getElementById('username');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-const errorMessage = document.getElementById('errorMessage');
+document.getElementById('signupBtn').addEventListener('click', async () => {
+    const username = document.getElementById('signupUsername').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
 
-loginBtn.addEventListener('click', async () => {
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-    const username = usernameInput.value.trim();
-
-    if (email && password && username) {
-        try {
-            await setPersistence(auth, browserLocalPersistence);
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            // حفظ اسم المستخدم في قاعدة البيانات
-            await setDoc(doc(db, "users", user.uid), { username });
-
-            // تخزين اسم المستخدم في Local Storage
-            localStorage.setItem('username', username);
-
-            // التبديل إلى صفحة المنشورات
-            window.location.href = 'https://hussaindev10.github.io/posttest/';
-        } catch (error) {
-            errorMessage.textContent = `خطأ في تسجيل الدخول: ${error.message}`;
-        }
-    } else {
-        errorMessage.textContent = "يرجى ملء جميع الحقول.";
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: username });
+        window.location.href = 'posts.html';
+    } catch (error) {
+        alert(`خطأ: ${error.message}`);
     }
 });
 
-signupBtn.addEventListener('click', async () => {
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-    const username = usernameInput.value.trim();
+document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-    if (email && password && username) {
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            // حفظ اسم المستخدم في قاعدة البيانات
-            await setDoc(doc(db, "users", user.uid), { username });
-
-            // تخزين اسم المستخدم في Local Storage
-            localStorage.setItem('username', username);
-
-            // التبديل إلى صفحة المنشورات
-            window.location.href = 'https://hussaindev10.github.io/posttest/';
-        } catch (error) {
-            errorMessage.textContent = `خطأ في إنشاء الحساب: ${error.message}`;
-        }
-    } else {
-        errorMessage.textContent = "يرجى ملء جميع الحقول.";
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'posts.html';
+    } catch (error) {
+        alert(`خطأ: ${error.message}`);
     }
 });
