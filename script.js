@@ -29,7 +29,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             const userData = userDoc.data();
             const username = userData ? userData.username : 'مستخدم';
             localStorage.setItem('username', username);
-            window.location.href = 'https://hussaindev10.github.io/posttest/?';
+            window.location.href = 'https://github.com/HussainDEV10/posttest/';
         }
     } catch (error) {
         console.error('خطأ في تسجيل الدخول:', error.message);
@@ -47,7 +47,7 @@ document.getElementById('sign-up-button').addEventListener('click', async () => 
         const user = userCredential.user;
         await setDoc(doc(db, 'users', user.uid), { username });
         localStorage.setItem('username', username);
-        window.location.href = 'https://hussaindev10.github.io/posttest/?';
+        window.location.href = 'https://hussaindev10.github.io/posttest/';
     } catch (error) {
         console.error('خطأ في إنشاء الحساب:', error.message);
         alert('فشل إنشاء الحساب: ' + error.message);
