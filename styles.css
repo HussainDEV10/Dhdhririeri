@@ -61,3 +61,5 @@ button:hover {
 .message {
     text-align: center;
 }
+
+<p id="errorMessage" style="color: red;"></p>
