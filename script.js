@@ -22,7 +22,7 @@ document.getElementById('signupBtn').addEventListener('click', async () => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(userCredential.user, { displayName: username });
-        window.location.href = 'posts.html';
+        window.location.href = 'https://hussaindev10.github.io/posttest/';
     } catch (error) {
         alert(`خطأ: ${error.message}`);
     }
@@ -34,7 +34,7 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = 'posts.html';
+        window.location.href = 'https://hussaindev10.github.io/posttest/';
     } catch (error) {
         alert(`خطأ: ${error.message}`);
     }
