@@ -7,21 +7,13 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>تسجيل الدخول</h1>
-        <form id="login-form">
-            <label for="username">اسم المستخدم:</label>
-            <input type="text" id="username" required>
-            <label for="email">البريد الإلكتروني:</label>
-            <input type="email" id="email" required>
-            <label for="password">كلمة المرور:</label>
-            <input type="password" id="password" required>
-            <button type="submit">تسجيل الدخول</button>
-        </form>
-        <div class="message">
-            <p>لا تمتلك حسابًا؟ <button id="sign-up-button" class="signup-btn">أنشئ حسابًا</button></p>
-        </div>
+    <div class="login-container">
+        <h2>تسجيل الدخول</h2>
+        <input type="email" id="emailInput" placeholder="البريد الإلكتروني">
+        <input type="password" id="passwordInput" placeholder="كلمة المرور">
+        <button id="loginBtn">تسجيل الدخول</button>
     </div>
+
     <script type="module" src="script.js"></script>
 </body>
 </html>
