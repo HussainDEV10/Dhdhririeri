@@ -17,12 +17,12 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const loginBtn = document.getElementById('loginBtn');
-const signUpBtn = document.getElementById('signUpBtn'); // زر إنشاء حساب
+const signupBtn = document.getElementById('signupBtn');
 const usernameInput = document.getElementById('username');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
+const errorMessage = document.getElementById('errorMessage');
 
-// تسجيل الدخول
 loginBtn.addEventListener('click', async () => {
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
@@ -43,22 +43,20 @@ loginBtn.addEventListener('click', async () => {
             // التبديل إلى صفحة المنشورات
             window.location.href = 'https://hussaindev10.github.io/posttest/?';
         } catch (error) {
-            console.error("خطأ في تسجيل الدخول: ", error);
+            errorMessage.textContent = `خطأ في تسجيل الدخول: ${error.message}`;
         }
     } else {
-        alert("يرجى ملء جميع الحقول.");
+        errorMessage.textContent = "يرجى ملء جميع الحقول.";
     }
 });
 
-// إنشاء حساب جديد
-signUpBtn.addEventListener('click', async () => {
+signupBtn.addEventListener('click', async () => {
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
     const username = usernameInput.value.trim();
 
     if (email && password && username) {
         try {
-            await setPersistence(auth, browserLocalPersistence);
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
@@ -71,9 +69,9 @@ signUpBtn.addEventListener('click', async () => {
             // التبديل إلى صفحة المنشورات
             window.location.href = 'https://hussaindev10.github.io/posttest/?';
         } catch (error) {
-            console.error("خطأ في إنشاء الحساب: ", error);
+            errorMessage.textContent = `خطأ في إنشاء الحساب: ${error.message}`;
         }
     } else {
-        alert("يرجى ملء جميع الحقول.");
+        errorMessage.textContent = "يرجى ملء جميع الحقول.";
     }
 });
