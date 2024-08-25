@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>تسجيل الدخول أو إنشاء حساب</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-container">
-        <button id="signUpBtn">إنشاء حساب</button>
-        <h1>تسجيل الدخول</h1>
-        <input type="text" id="username" placeholder="اسم المستخدم" required>
-        <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-        <input type="password" id="password" placeholder="كلمة المرور" required>
+    <div class="auth-container">
+        <h2>تسجيل الدخول</h2>
+        <input type="text" id="loginUsername" placeholder="اسم المستخدم">
         <button id="loginBtn">تسجيل الدخول</button>
+
+        <h2>إنشاء حساب جديد</h2>
+        <input type="text" id="signupUsername" placeholder="اسم المستخدم">
+        <button id="signupBtn">إنشاء حساب جديد</button>
     </div>
 
     <script src="script.js"></script>
