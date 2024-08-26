@@ -6,7 +6,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
     authDomain: "facebookweb-2030.firebaseapp.com",
     projectId: "facebookweb-2030",
-    storageBucket: "facebookweb-2030.appspot.com",
+    storageBucket: "facebookweb-2030",
     messagingSenderId: "912333220741",
     appId: "1:912333220741:web:1c7425f4248b7465b45c67",
     measurementId: "G-ZJ6M2D8T3M"
@@ -38,6 +38,7 @@ signupBtn.addEventListener('click', async () => {
         window.location.href = "https://hussaindev10.github.io/Mon/";
     } catch (error) {
         console.error("خطأ في إنشاء الحساب:", error);
+        alert("حدث خطأ أثناء إنشاء الحساب. يرجى المحاولة مرة أخرى.");
     }
 });
 
@@ -57,5 +58,6 @@ loginBtn.addEventListener('click', async () => {
         window.location.href = "https://hussaindev10.github.io/Mon/";
     } catch (error) {
         console.error("خطأ في تسجيل الدخول:", error);
+        alert("حدث خطأ أثناء تسجيل الدخول. يرجى التحقق من البيانات والمحاولة مرة أخرى.");
     }
 });
