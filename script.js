@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
@@ -34,8 +34,8 @@ signupBtn.addEventListener('click', async () => {
             email: email
         });
 
-        // إعادة التوجيه إلى صفحة المنشورات مع تمرير اسم المستخدم
-        window.location.href = `?username=${encodeURIComponent(username)}`;
+        // إعادة التوجيه إلى صفحة المنشورات
+        window.location.href = "https://hussaindev10.github.io/Mon/";
     } catch (error) {
         console.error("خطأ في إنشاء الحساب:", error);
     }
@@ -53,8 +53,8 @@ loginBtn.addEventListener('click', async () => {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const username = userDoc.data().username;
 
-        // إعادة التوجيه إلى صفحة المنشورات مع تمرير اسم المستخدم
-        window.location.href = `posts.html?username=${encodeURIComponent(username)}`;
+        // إعادة التوجيه إلى صفحة المنشورات
+        window.location.href = "https://hussaindev10.github.io/Mon/";
     } catch (error) {
         console.error("خطأ في تسجيل الدخول:", error);
     }
