@@ -1,11 +1,12 @@
 // إعداد Firebase
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
+    authDomain: "facebookweb-2030.firebaseapp.com",
+    projectId: "facebookweb-2030",
+    storageBucket: "facebookweb-2030.appspot.com",
+    messagingSenderId: "912333220741",
+    appId: "1:912333220741:web:1c7425f4248b7465b45c67",
+    measurementId: "G-ZJ6M2D8T3M"
 };
 
 firebase.initializeApp(firebaseConfig);
