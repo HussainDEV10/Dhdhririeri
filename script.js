@@ -23,7 +23,7 @@ loginForm.addEventListener('submit', async (e) => {
 
     try {
         await auth.signInWithEmailAndPassword(email, password);
-        window.location.href = 'https://hussaindev10.github.io/posts/';
+        window.location.href = 'https://hussaindev10.github.io/Mon/';
     } catch (error) {
         alert('خطأ في تسجيل الدخول: ' + error.message);
     }
