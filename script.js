@@ -1,4 +1,7 @@
-// إعداد Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
     authDomain: "facebookweb-2030.firebaseapp.com",
@@ -9,35 +12,38 @@ const firebaseConfig = {
     measurementId: "G-ZJ6M2D8T3M"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-const auth = firebase.auth();
-const loginForm = document.getElementById('login-form');
-const signupLink = document.getElementById('signup-link');
+const loginBtn = document.getElementById('loginBtn');
+const usernameInput = document.getElementById('username');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
 
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+loginBtn.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const username = usernameInput.value.trim();
 
-    try {
-        await auth.signInWithEmailAndPassword(email, password);
-        window.location.href = 'https://hussaindev10.github.io/Mon/';
-    } catch (error) {
-        alert('خطأ في تسجيل الدخول: ' + error.message);
+    if (email && password && username) {
+        try {
+            await setPersistence(auth, browserLocalPersistence);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // حفظ اسم المستخدم في قاعدة البيانات
+            await setDoc(doc(db, "users", user.uid), { username });
+
+            // تخزين اسم المستخدم في Local Storage
+            localStorage.setItem('username', username);
+
+            // التبديل إلى صفحة المنشورات
+            window.location.href = 'https://hussaindev10/github/Mon/';
+        } catch (error) {
+            console.error("خطأ في تسجيل الدخول: ", error);
+        }
+    } else {
+        alert("يرجى ملء جميع الحقول.");
     }
-});
-
-signupLink.addEventListener('click', () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-            window.location.href = 'https://hussaindev10.github.io/posts/';
-        })
-        .catch((error) => {
-            alert('خطأ في إنشاء الحساب: ' + error.message);
-        });
 });
