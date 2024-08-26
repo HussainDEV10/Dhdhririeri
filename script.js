@@ -1,59 +1,42 @@
-// إعدادات Firebase
+// إعداد Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
-    authDomain: "facebookweb-2030.firebaseapp.com",
-    projectId: "facebookweb-2030",
-    storageBucket: "facebookweb-2030.appspot.com",
-    messagingSenderId: "912333220741",
-    appId: "1:912333220741:web:1c7425f4248b7465b45c67",
-    measurementId: "G-ZJ6M2D8T3M"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
 };
 
-// تهيئة Firebase
 firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
-const db = firebase.firestore();
+const loginForm = document.getElementById('login-form');
+const signupLink = document.getElementById('signup-link');
 
-const signupBtn = document.getElementById('signupBtn');
-const loginBtn = document.getElementById('loginBtn');
-
-signupBtn.addEventListener('click', async () => {
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const username = document.getElementById('username').value;
 
     try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-
-        // حفظ بيانات المستخدم في Firestore
-        await db.collection("users").doc(user.uid).set({
-            username: username,
-            email: email
-        });
-
-        // إعادة التوجيه إلى صفحة المنشورات
-        window.location.href = `https://hussaindev10.github.io/Mon/?username=${encodeURIComponent(username)}`;
+        await auth.signInWithEmailAndPassword(email, password);
+        window.location.href = 'https://hussaindev10.github.io/Mon/';
     } catch (error) {
-        console.error("خطأ في إنشاء الحساب:", error);
+        alert('خطأ في تسجيل الدخول: ' + error.message);
     }
 });
 
-loginBtn.addEventListener('click', async () => {
+signupLink.addEventListener('click', () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-
-    try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-
-        // استرجاع اسم المستخدم من Firestore
-        const userDoc = await db.collection("users").doc(user.uid).get();
-        const username = userDoc.data().username;
-
-        // إعادة التوجيه إلى صفحة المنشورات
-        window.location.href = `https://hussaindev10.github.io/Mon/?username=${encodeURIComponent(username)}`;
-    } catch (error) {
-        console.error("خطأ في تسجيل الدخول:", error);
-    }
+    
+    auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            window.location.href = 'https://hussaindev10.github.io/Mon/';
+        })
+        .catch((error) => {
+            alert('خطأ في إنشاء الحساب: ' + error.message);
+        });
 });
