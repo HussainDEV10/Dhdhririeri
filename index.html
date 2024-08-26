@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول</title>
+    <title>تسجيل الدخول / إنشاء حساب</title>
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="login-container">
-        <h2>تسجيل الدخول</h2>
-        <input type="text" id="username" placeholder="اسم المستخدم">
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button id="loginBtn">تسجيل الدخول</button>
-        <button id="signupBtn">إنشاء حساب</button>
-    </div>
-
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>تسجيل الدخول / إنشاء حساب</h1>
+        <div>
+            <input type="text" id="username" placeholder="اسم المستخدم" required>
+            <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+            <input type="password" id="password" placeholder="كلمة المرور" required>
+            <button id="signupBtn">إنشاء حساب</button>
+            <button id="loginBtn">تسجيل الدخول</button>
+        </div>
+    </div>
 </body>
-    </html>
+</html>
