@@ -1,46 +1,59 @@
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
-const auth = getAuth();
-
-const registerUser = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // تم إنشاء الحساب بنجاح
-            const user = userCredential.user;
-            console.log("User created:", user);
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("Error:", errorCode, errorMessage);
-        });
+// إعدادات Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
+    authDomain: "facebookweb-2030.firebaseapp.com",
+    projectId: "facebookweb-2030",
+    storageBucket: "facebookweb-2030.appspot.com",
+    messagingSenderId: "912333220741",
+    appId: "1:912333220741:web:1c7425f4248b7465b45c67",
+    measurementId: "G-ZJ6M2D8T3M"
 };
 
-const loginUser = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // تسجيل الدخول بنجاح
-            window.location.href = "https://hussaindev10.github.io/Mon/?";
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("Error:", errorCode, errorMessage);
-        });
-};
+// تهيئة Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-// نفس الطريقة يمكن استخدامها بعد تسجيل الحساب الجديد
-const registerUser = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // تم إنشاء الحساب بنجاح
-            window.location.href = "https://hussaindev10.github.io/Mon/?";
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("Error:", errorCode, errorMessage);
-        });
-};
+const signupBtn = document.getElementById('signupBtn');
+const loginBtn = document.getElementById('loginBtn');
 
-// استدعاء هذه الدالة عند ضغط زر التسجيل مع تمرير البريد الإلكتروني وكلمة المرور المدخلين
+signupBtn.addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;
+
+    try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        // حفظ بيانات المستخدم في Firestore
+        await db.collection("users").doc(user.uid).set({
+            username: username,
+            email: email
+        });
+
+        // إعادة التوجيه إلى صفحة المنشورات
+        window.location.href = `https://hussaindev10.github.io/Mon/?username=${encodeURIComponent(username)}`;
+    } catch (error) {
+        console.error("خطأ في إنشاء الحساب:", error);
+    }
+});
+
+loginBtn.addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        // استرجاع اسم المستخدم من Firestore
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        const username = userDoc.data().username;
+
+        // إعادة التوجيه إلى صفحة المنشورات
+        window.location.href = `https://hussaindev10.github.io/Mon/?username=${encodeURIComponent(username)}`;
+    } catch (error) {
+        console.error("خطأ في تسجيل الدخول:", error);
+    }
+});
