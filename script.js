@@ -35,7 +35,7 @@ signupBtn.addEventListener('click', async () => {
         });
 
         // إعادة التوجيه إلى صفحة المنشورات
-        window.location.href = "https://hussaindev10.github.io/Mon/";
+        window.location.href = "https://hussaindev10.github.io/Mon/?";
     } catch (error) {
         console.error("خطأ في إنشاء الحساب:", error);
         alert("حدث خطأ أثناء إنشاء الحساب. يرجى المحاولة مرة أخرى.");
@@ -55,7 +55,7 @@ loginBtn.addEventListener('click', async () => {
         const username = userDoc.data().username;
 
         // إعادة التوجيه إلى صفحة المنشورات
-        window.location.href = "https://hussaindev10.github.io/Mon/";
+        window.location.href = "https://hussaindev10.github.io/Mon/?";
     } catch (error) {
         console.error("خطأ في تسجيل الدخول:", error);
         alert("حدث خطأ أثناء تسجيل الدخول. يرجى التحقق من البيانات والمحاولة مرة أخرى.");
