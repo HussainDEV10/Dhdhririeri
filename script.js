@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
@@ -13,29 +14,48 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-document.getElementById('signupBtn').addEventListener('click', async () => {
-    const username = document.getElementById('signupUsername').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
+const loginBtn = document.getElementById('loginBtn');
+const signupBtn = document.getElementById('signupBtn');
+
+signupBtn.addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await updateProfile(userCredential.user, { displayName: username });
-        window.location.href = 'https://hussaindev10.github.io/posttest/';
+        const user = userCredential.user;
+
+        // حفظ بيانات المستخدم في Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            username: username,
+            email: email
+        });
+
+        // إعادة التوجيه إلى صفحة المنشورات مع تمرير اسم المستخدم
+        window.location.href = `?username=${encodeURIComponent(username)}`;
     } catch (error) {
-        alert(`خطأ: ${error.message}`);
+        console.error("خطأ في إنشاء الحساب:", error);
     }
 });
 
-document.getElementById('loginBtn').addEventListener('click', async () => {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
+loginBtn.addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = 'https://hussaindev10.github.io/posttest/';
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // استرجاع اسم المستخدم من Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const username = userDoc.data().username;
+
+        // إعادة التوجيه إلى صفحة المنشورات مع تمرير اسم المستخدم
+        window.location.href = `posts.html?username=${encodeURIComponent(username)}`;
     } catch (error) {
-        alert(`خطأ: ${error.message}`);
+        console.error("خطأ في تسجيل الدخول:", error);
     }
 });
