@@ -3,23 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول / إنشاء حساب</title>
+    <title>تسجيل الدخول</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"></script>
-    <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>تسجيل الدخول / إنشاء حساب</h1>
-        <div>
-            <input type="text" id="username" placeholder="اسم المستخدم" required>
-            <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-            <input type="password" id="password" placeholder="كلمة المرور" required>
-            <button id="signupBtn">إنشاء حساب</button>
-            <button id="loginBtn">تسجيل الدخول</button>
-        </div>
-    </div>
+    <h1>تسجيل الدخول</h1>
+    <form id="login-form">
+        <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+        <input type="password" id="password" placeholder="كلمة المرور" required>
+        <button type="submit">تسجيل الدخول</button>
+        <p>ليس لديك حساب؟ <a href="#" id="signup-link">سجل الآن</a></p>
+    </form>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
