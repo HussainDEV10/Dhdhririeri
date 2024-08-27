@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
     authDomain: "facebookweb-2030.firebaseapp.com",
@@ -99,7 +100,7 @@ createAccountBtn.addEventListener('click', async () => {
             localStorage.setItem('username', username);
 
             // توجيه المستخدم إلى صفحة المنشورات
-            window.location.href = 'https://hussaindev10.github.io/Mon/';
+            window.location.href = 'https://hussaindev10.github.io/Mon/?';
         } catch (error) {
             showNotification('حدث خطأ أثناء إنشاء الحساب. يرجى المحاولة مرة أخرى.', 'info');
             console.error("خطأ في إنشاء الحساب: ", error);
