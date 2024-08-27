@@ -46,6 +46,11 @@ button:hover {
     background-color: #0056b3;
     }
 
-signupBtn {
-    color: black;
+createAccountBtn {
+    width: 100%;
+    padding: 10px;
+    bottom: 5px;
+    color: #fff;
+    background-color: #007bff;
+    font-size: 16px;
 }
