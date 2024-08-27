@@ -75,3 +75,36 @@ signupBtn.addEventListener('click', async () => {
         errorMessage.textContent = "يرجى ملء جميع الحقول.";
     }
 });
+
+
+const createAccountBtn = document.getElementById('createAccountBtn');
+
+createAccountBtn.addEventListener('click', async () => {
+    const email = prompt("أدخل بريدك الإلكتروني:");
+    const password = prompt("أدخل كلمة المرور:");
+    const username = prompt("أدخل اسم المستخدم:");
+
+    if (email && password && username) {
+        try {
+            // إنشاء حساب جديد
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // تخزين بيانات المستخدم في Firestore
+            await setDoc(doc(db, "users", user.uid), {
+                username: username
+            });
+
+            // حفظ الاسم في Local Storage
+            localStorage.setItem('username', username);
+
+            // توجيه المستخدم إلى صفحة المنشورات
+            window.location.href = 'https://hussaindev10.github.io/Mon/';
+        } catch (error) {
+            showNotification('حدث خطأ أثناء إنشاء الحساب. يرجى المحاولة مرة أخرى.', 'info');
+            console.error("خطأ في إنشاء الحساب: ", error);
+        }
+    } else {
+        showNotification('يرجى ملء جميع الحقول.', 'info');
+    }
+});
