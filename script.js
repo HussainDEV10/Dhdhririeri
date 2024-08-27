@@ -41,7 +41,7 @@ loginBtn.addEventListener('click', async () => {
             localStorage.setItem('username', username);
 
             // التبديل إلى صفحة المنشورات
-            window.location.href = 'https://hussaindev10.github.io/Mon/';
+            window.location.href = 'https://hussaindev10.github.io/Mon/?';
         } catch (error) {
             errorMessage.textContent = `خطأ في تسجيل الدخول: ${error.message}`;
         }
@@ -67,7 +67,7 @@ signupBtn.addEventListener('click', async () => {
             localStorage.setItem('username', username);
 
             // التبديل إلى صفحة المنشورات
-            window.location.href = 'https://hussaindev10.github.io/Mon/';
+            window.location.href = 'https://hussaindev10.github.io/Mon/?';
         } catch (error) {
             errorMessage.textContent = `خطأ في إنشاء الحساب: ${error.message}`;
         }
