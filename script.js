@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -17,9 +17,11 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const loginBtn = document.getElementById('loginBtn');
+const signupBtn = document.getElementById('signupBtn');
 const usernameInput = document.getElementById('username');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
+const errorMessage = document.getElementById('errorMessage');
 
 loginBtn.addEventListener('click', async () => {
     const email = emailInput.value.trim();
@@ -39,11 +41,37 @@ loginBtn.addEventListener('click', async () => {
             localStorage.setItem('username', username);
 
             // التبديل إلى صفحة المنشورات
-            window.location.href = 'https://hussaindev10.github.io/Mon/';
+            window.location.href = 'https://hussaindev10.github.io/posttest/';
         } catch (error) {
-            console.error("خطأ في تسجيل الدخول: ", error);
+            errorMessage.textContent = `خطأ في تسجيل الدخول: ${error.message}`;
         }
     } else {
-        alert("يرجى ملء جميع الحقول.");
+        errorMessage.textContent = "يرجى ملء جميع الحقول.";
+    }
+});
+
+signupBtn.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const username = usernameInput.value.trim();
+
+    if (email && password && username) {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // حفظ اسم المستخدم في قاعدة البيانات
+            await setDoc(doc(db, "users", user.uid), { username });
+
+            // تخزين اسم المستخدم في Local Storage
+            localStorage.setItem('username', username);
+
+            // التبديل إلى صفحة المنشورات
+            window.location.href = 'https://hussaindev10.github.io/posttest/';
+        } catch (error) {
+            errorMessage.textContent = `خطأ في إنشاء الحساب: ${error.message}`;
+        }
+    } else {
+        errorMessage.textContent = "يرجى ملء جميع الحقول.";
     }
 });
