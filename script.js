@@ -67,7 +67,7 @@ signupBtn.addEventListener('click', async () => {
             localStorage.setItem('username', username);
 
             // التبديل إلى صفحة المنشورات
-            window.location.href = 'https://hussaindev10.github.io/posttest/';
+            window.location.href = 'https://hussaindev10.github.io/Mon/';
         } catch (error) {
             errorMessage.textContent = `خطأ في إنشاء الحساب: ${error.message}`;
         }
