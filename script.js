@@ -15,6 +15,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 document.addEventListener('DOMContentLoaded', () => {
+    const usernameInput = document.getElementById('username');
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passwordInput');
     const loginBtn = document.getElementById('loginBtn');
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
-            setTimeout(() => window.location.href = 'https://hussaindev10.github.io/posts/', 2000);
+            setTimeout(() => window.location.href = 'https://hussaindev10.github.io/postss/', 2000);
         } catch (error) {
             messageDiv.textContent = 'خطأ في تسجيل الدخول: ' + error.message;
         }
@@ -44,9 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
-            setTimeout(() => window.location.href = 'https://hussaindev10.github.io/posts/', 2000);
+            setTimeout(() => window.location.href = 'https://hussaindev10.github.io/postss/', 2000);
         } catch (error) {
             messageDiv.textContent = 'خطأ في إنشاء الحساب: ' + error.message;
         }
     });
+
+loginBtn.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    if (username) {
+        // حفظ اسم المستخدم في LocalStorage
+        localStorage.setItem('username', username);
+        // إعادة التوجيه إلى صفحة المنشورات
+        window.location.href = 'https://hussaindev10.github.io/postss/';
+    }
+});
 });
