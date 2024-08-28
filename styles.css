@@ -30,6 +30,8 @@ input[type="password"] {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+    font-family: 'Rubik', sans-serif; /* إضافة خط Rubik */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل أسفل الحقول */
 }
 
 /* تنسيق أزرار */
@@ -43,6 +45,7 @@ button {
     color: #fff;
     cursor: pointer;
     transition: opacity 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل أسفل الأزرار */
 }
 
 button:hover {
