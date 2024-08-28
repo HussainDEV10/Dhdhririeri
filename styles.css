@@ -34,7 +34,7 @@ input[type="password"] {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل أسفل الحقول */
 }
 
-/* تنسيق أزرار */
+/* تنسيق الأزرار */
 button {
     width: 84%; /* عرض الزر */
     padding: 10px;
@@ -59,6 +59,15 @@ button#loginBtn {
 
 button#signupBtn {
     background-color: #28a745; /* لون أخضر */
+}
+
+/* تنسيق النصوص داخل حقول الإدخال والأزرار */
+input::placeholder {
+    font-family: 'Rubik', sans-serif; /* إضافة خط Rubik للنص داخل حقول الإدخال */
+}
+
+button {
+    font-family: 'Rubik', sans-serif; /* التأكد من أن نص الأزرار بخط Rubik */
 }
 
 /* تنسيق الرسائل */
