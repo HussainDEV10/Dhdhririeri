@@ -5,23 +5,13 @@
 body {
     font-family: 'Rubik', sans-serif;
     display: flex;
+    flex-direction: column; /* ترتيب العناصر عمودياً */
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
     background-color: #f4f4f4;
-}
-
-/* تنسيق الحاوية */
-.container {
-    width: 100%;
-    max-width: 400px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    display: block;
 }
 
 /* تنسيق العنوان */
@@ -34,7 +24,7 @@ h1 {
 /* تنسيق حقول الإدخال */
 input[type="email"], 
 input[type="password"] {
-    width: 100%;
+    width: 80%; /* عرض الحقل */
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
@@ -44,7 +34,7 @@ input[type="password"] {
 
 /* تنسيق أزرار */
 button {
-    width: 100%; /* جعل الأزرار تأخذ عرض الحاوية بالكامل */
+    width: 84%; /* عرض الزر */
     padding: 10px;
     margin: 10px 0; /* تباعد بين الأزرار */
     border: none;
@@ -73,4 +63,5 @@ button#signupBtn {
     color: #000;
     font-size: 14px;
     margin-top: 20px;
-    }
+    width: 80%; /* عرض الرسالة */
+}
