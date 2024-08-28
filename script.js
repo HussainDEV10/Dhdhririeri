@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
-            setTimeout(() => window.location.href = 'https://hussaindev10.github.io/Post/', 2000);
+            setTimeout(() => window.location.href = 'https://hussaindev10.github.io/posts/', 2000);
         } catch (error) {
             messageDiv.textContent = 'خطأ في إنشاء الحساب: ' + error.message;
         }
