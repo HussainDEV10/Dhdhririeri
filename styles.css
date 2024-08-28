@@ -21,6 +21,8 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
+    display: flex;
+    flex-direction: column; /* جعل العناصر مرتبة عموديًا */
 }
 
 /* تنسيق العنوان */
@@ -43,9 +45,9 @@ input[type="password"] {
 
 /* تنسيق أزرار */
 button {
-    width: calc(50% - 10px);
+    width: 100%; /* جعل الأزرار تأخذ عرض الحاوية بالكامل */
     padding: 10px;
-    margin: 10px 5px;
+    margin: 10px 0; /* تباعد بين الأزرار */
     border: none;
     border-radius: 4px;
     font-size: 16px;
