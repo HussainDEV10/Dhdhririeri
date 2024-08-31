@@ -23,7 +23,8 @@ h1 {
 
 /* تنسيق حقول الإدخال */
 input[type="email"], 
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
     width: 80%; /* عرض الحقل */
     padding: 10px;
     margin-bottom: 15px;
@@ -32,8 +33,7 @@ input[type="password"] {
     font-size: 16px;
     font-family: 'Rubik', sans-serif; /* إضافة خط Rubik */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل أسفل الحقول */
-}
-
+} 
 /* تنسيق الأزرار */
 button {
     width: 84%; /* عرض الزر */
