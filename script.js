@@ -24,9 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(messageDiv);
 
     loginBtn.addEventListener('click', async () => {
-        messageDiv.textContent = 'محاولة تسجيل الدخول...';
-        const email = emailInput.value;
-        const password = passwordInput.value;
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        
+        // التحقق من الحقول الفارغة
+        if (email === '' || password === '') {
+            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ الحقول';
+            return;
+        }
+
+        // التحقق من صحة البريد الإلكتروني
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال بريد إلكتروني صالح';
+            return;
+        }
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
@@ -38,9 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     signupBtn.addEventListener('click', async () => {
-        messageDiv.textContent = 'محاولة إنشاء حساب...';
-        const email = emailInput.value;
-        const password = passwordInput.value;
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        
+        // التحقق من الحقول الفارغة
+        if (email === '' || password === '') {
+            messageDiv.textContent = 'خطأ في إنشاء الحساب، يرجى ملئ الحقول';
+            return;
+        }
+
+        // التحقق من صحة البريد الإلكتروني
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            messageDiv.textContent = 'خطأ في إنشاء الحساب، يرجى إدخال بريد إلكتروني صالح';
+            return;
+        }
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
@@ -51,13 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-loginBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    if (username) {
-        // حفظ اسم المستخدم في LocalStorage
-        localStorage.setItem('username', username);
-        // إعادة التوجيه إلى صفحة المنشورات
-        window.location.href = 'https://hussaindev10.github.io/postss/';
-    }
-});
+    loginBtn.addEventListener('click', () => {
+        const username = usernameInput.value.trim();
+        if (username) {
+            // حفظ اسم المستخدم في LocalStorage
+            localStorage.setItem('username', username);
+            // إعادة التوجيه إلى صفحة المنشورات
+            window.location.href = 'https://hussaindev10.github.io/postss/';
+        }
+    });
 });
