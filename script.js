@@ -40,6 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // التحقق من طول كلمة المرور
+        if (password.length < 6) {
+            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
+            return;
+        }
+
         try {
             await signInWithEmailAndPassword(auth, email, password);
             messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
@@ -63,6 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
             messageDiv.textContent = 'خطأ في إنشاء الحساب، يرجى إدخال بريد إلكتروني صالح';
+            return;
+        }
+
+        // التحقق من طول كلمة المرور
+        if (password.length < 6) {
+            messageDiv.textContent = 'خطأ في إنشاء الحساب، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
             return;
         }
 
