@@ -23,8 +23,7 @@ h1 {
 
 /* تنسيق حقول الإدخال */
 input[type="email"], 
-input[type="password"]
-input[type="username"] {
+input[type="password"] {
     width: 80%; /* عرض الحقل */
     padding: 10px;
     margin-bottom: 15px;
