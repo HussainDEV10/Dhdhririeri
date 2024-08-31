@@ -23,28 +23,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageDiv = document.createElement('div');
     document.body.appendChild(messageDiv);
 
-    loginBtn.addEventListener('click', async () => {
+    const validateInputs = () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-        
+
         // التحقق من الحقول الفارغة
         if (email === '' || password === '') {
             messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ الحقول';
-            return;
+            return false;
         }
 
         // التحقق من صحة البريد الإلكتروني
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
             messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال بريد إلكتروني صالح';
-            return;
+            return false;
         }
 
         // التحقق من طول كلمة المرور
         if (password.length < 6) {
             messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
-            return;
+            return false;
         }
+
+        return true;
+    };
+
+    loginBtn.addEventListener('click', async () => {
+        if (!validateInputs()) {
+            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
+        }
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
@@ -56,27 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     signupBtn.addEventListener('click', async () => {
+        if (!validateInputs()) {
+            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
+        }
+
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-        
-        // التحقق من الحقول الفارغة
-        if (email === '' || password === '') {
-            messageDiv.textContent = 'خطأ في إنشاء الحساب، يرجى ملئ الحقول';
-            return;
-        }
-
-        // التحقق من صحة البريد الإلكتروني
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            messageDiv.textContent = 'خطأ في إنشاء الحساب، يرجى إدخال بريد إلكتروني صالح';
-            return;
-        }
-
-        // التحقق من طول كلمة المرور
-        if (password.length < 6) {
-            messageDiv.textContent = 'خطأ في إنشاء الحساب، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
-            return;
-        }
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
@@ -84,16 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => window.location.href = 'https://hussaindev10.github.io/postss/', 2000);
         } catch (error) {
             messageDiv.textContent = 'خطأ في إنشاء الحساب: ' + error.message;
-        }
-    });
-
-    loginBtn.addEventListener('click', () => {
-        const username = usernameInput.value.trim();
-        if (username) {
-            // حفظ اسم المستخدم في LocalStorage
-            localStorage.setItem('username', username);
-            // إعادة التوجيه إلى صفحة المنشورات
-            window.location.href = 'https://hussaindev10.github.io/postss/';
         }
     });
 });
