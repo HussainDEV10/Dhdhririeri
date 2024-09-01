@@ -14,6 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const usernameInput = document.getElementById('usernameInput');
     const emailInput = document.getElementById('emailInput');
@@ -28,10 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passwordInput.value.trim();
         const username = usernameInput.value.trim();
 
-        
         // التحقق من الحقول الفارغة
-        if (email === '' || password === '') {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ الحقول';
+        if (email === '' || password === '' || username === '') {
+            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ جميع الحقول';
             return false;
         }
 
@@ -51,15 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     };
 
+    const saveUsername = () => {
+        const username = usernameInput.value.trim();
+        localStorage.setItem('username', username);
+    };
+
     loginBtn.addEventListener('click', async () => {
         if (!validateInputs()) {
             return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
         }
 
+        saveUsername(); // حفظ اسم المستخدم في التخزين المؤقت
+
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-        const username = usernameInput.value.trim();
-        
+
         try {
             await signInWithEmailAndPassword(auth, email, password);
             messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
@@ -74,10 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
         }
 
+        saveUsername(); // حفظ اسم المستخدم في التخزين المؤقت
+
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-        const username = usernameInput.value.trim();
-        
+
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
