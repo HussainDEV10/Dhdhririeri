@@ -1,5 +1,3 @@
-// script.js لصفحة التسجيل
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
@@ -17,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 document.addEventListener('DOMContentLoaded', () => {
-    const usernameInput = document.getElementById('username');
+    const usernameInput = document.getElementById('usernameInput');
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passwordInput');
     const loginBtn = document.getElementById('loginBtn');
@@ -28,41 +26,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateInputs = () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-        
 
-        if (email === '' || password === '' || username === '') {
-            messageDiv.textContent = 'يرجى ملء جميع الحقول';
+        // التحقق من الحقول الفارغة
+        if (email === '' || password === '' || usernameInput.value.trim() === '') {
+            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ جميع الحقول';
             return false;
         }
 
+        // التحقق من صحة البريد الإلكتروني
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
-            messageDiv.textContent = 'يرجى إدخال بريد إلكتروني صالح';
+            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال بريد إلكتروني صالح';
             return false;
         }
 
+        // التحقق من طول كلمة المرور
         if (password.length < 6) {
-            messageDiv.textContent = 'يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
+            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
             return false;
         }
 
         return true;
     };
 
+    const saveUsernameAndRedirect = () => {
+        const username = usernameInput.value.trim();
+        localStorage.setItem('username', username);
+        window.location.href = 'https://hussaindev10.github.io/postss/';  // تأكد من استخدام المسار الصحيح لصفحة المنشورات
+    };
+
     loginBtn.addEventListener('click', async () => {
         if (!validateInputs()) {
-            return;
+            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
         }
 
-        
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            localStorage.setItem('username', username); // تخزين اسم المستخدم في localStorage
             messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
-            setTimeout(() => window.location.href = 'https://hussaindev10.github.io/postss/', 2000);
+            saveUsernameAndRedirect();
         } catch (error) {
             messageDiv.textContent = 'خطأ في تسجيل الدخول: ' + error.message;
         }
@@ -70,18 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     signupBtn.addEventListener('click', async () => {
         if (!validateInputs()) {
-            return;
+            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
         }
 
-        
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-            localStorage.setItem('username', username); // تخزين اسم المستخدم في localStorage
             messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
-            setTimeout(() => window.location.href = 'https://hussaindev10.github.io/postss/', 2000);
+            saveUsernameAndRedirect();
         } catch (error) {
             messageDiv.textContent = 'خطأ في إنشاء الحساب: ' + error.message;
         }
