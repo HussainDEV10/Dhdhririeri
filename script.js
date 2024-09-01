@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
@@ -13,79 +14,50 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', () => {
-    const usernameInput = document.getElementById('usernameInput');
-    const emailInput = document.getElementById('emailInput');
-    const passwordInput = document.getElementById('passwordInput');
-    const loginBtn = document.getElementById('loginBtn');
-    const signupBtn = document.getElementById('signupBtn');
-    const messageDiv = document.createElement('div');
-    document.body.appendChild(messageDiv);
+    const logoutBtn = document.getElementById('logoutBtn');
+    const usernameDisplay = document.getElementById('usernameDisplay');
+    const postsContainer = document.getElementById('postsContainer');
 
-    const validateInputs = () => {
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
+    // التحقق من حالة تسجيل الدخول
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            // عرض اسم المستخدم من التخزين المحلي
+            const username = localStorage.getItem('username');
+            if (username) {
+                usernameDisplay.textContent = `مرحبًا، ${username}`;
+            }
 
-        // التحقق من الحقول الفارغة
-        if (email === '' || password === '' || usernameInput.value.trim() === '') {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ جميع الحقول';
-            return false;
-        }
-
-        // التحقق من صحة البريد الإلكتروني
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال بريد إلكتروني صالح';
-            return false;
-        }
-
-        // التحقق من طول كلمة المرور
-        if (password.length < 6) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
-            return false;
-        }
-
-        return true;
-    };
-
-    const saveUsernameAndRedirect = () => {
-        const username = usernameInput.value.trim();
-        localStorage.setItem('username', username);
-        window.location.href = 'https://hussaindev10.github.io/postss/';  // تأكد من استخدام المسار الصحيح لصفحة المنشورات
-    };
-
-    loginBtn.addEventListener('click', async () => {
-        if (!validateInputs()) {
-            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
-        }
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
-            saveUsernameAndRedirect();
-        } catch (error) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول: ' + error.message;
+            // تحميل وعرض المنشورات
+            try {
+                const postsSnapshot = await getDocs(collection(db, 'posts'));
+                postsContainer.innerHTML = ''; // تفريغ الحاوية
+                postsSnapshot.forEach((doc) => {
+                    const postData = doc.data();
+                    const postElement = document.createElement('div');
+                    postElement.className = 'post';
+                    postElement.innerHTML = `<h3>${postData.title}</h3><p>${postData.description}</p><p>من قِبل: ${postData.username}</p>`;
+                    postsContainer.appendChild(postElement);
+                });
+            } catch (error) {
+                console.error('خطأ في تحميل المنشورات:', error);
+            }
+        } else {
+            // إعادة التوجيه إلى صفحة تسجيل الدخول إذا لم يكن المستخدم مسجل الدخول
+            window.location.href = 'https://hussaindev10.github.io/';
         }
     });
 
-    signupBtn.addEventListener('click', async () => {
-        if (!validateInputs()) {
-            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
-        }
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-
+    // تسجيل الخروج
+    logoutBtn.addEventListener('click', async () => {
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
-            saveUsernameAndRedirect();
+            await signOut(auth);
+            localStorage.removeItem('username');
+            window.location.href = 'https://hussaindev10.github.io/';
         } catch (error) {
-            messageDiv.textContent = 'خطأ في إنشاء الحساب: ' + error.message;
+            console.error('خطأ في تسجيل الخروج:', error);
         }
     });
 });
