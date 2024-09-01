@@ -26,7 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateInputs = () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
+        const username = usernameInput.value.trim();
 
+        
         // التحقق من الحقول الفارغة
         if (email === '' || password === '') {
             messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ الحقول';
@@ -56,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-
+        const username = usernameInput.value.trim();
+        
         try {
             await signInWithEmailAndPassword(auth, email, password);
             messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
@@ -73,7 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-
+        const username = usernameInput.value.trim();
+        
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
