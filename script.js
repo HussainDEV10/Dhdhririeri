@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 document.addEventListener('DOMContentLoaded', () => {
-    const usernameInput = document.getElementById('usernameInput');
+    const usernameInput = document.getElementById('username');
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passwordInput');
     const loginBtn = document.getElementById('loginBtn');
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateInputs = () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-        const username = usernameInput.value.trim();
+        
 
         if (email === '' || password === '' || username === '') {
             messageDiv.textContent = 'يرجى ملء جميع الحقول';
