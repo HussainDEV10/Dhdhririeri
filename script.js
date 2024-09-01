@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const username = usernameInput.value.trim();
+        
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const username = usernameInput.value.trim();
+        
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
