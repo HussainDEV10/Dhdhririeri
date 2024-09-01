@@ -1,3 +1,5 @@
+// script.js لصفحة التسجيل
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
@@ -14,7 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-
 document.addEventListener('DOMContentLoaded', () => {
     const usernameInput = document.getElementById('usernameInput');
     const emailInput = document.getElementById('emailInput');
@@ -29,45 +30,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passwordInput.value.trim();
         const username = usernameInput.value.trim();
 
-        // التحقق من الحقول الفارغة
         if (email === '' || password === '' || username === '') {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ جميع الحقول';
+            messageDiv.textContent = 'يرجى ملء جميع الحقول';
             return false;
         }
 
-        // التحقق من صحة البريد الإلكتروني
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال بريد إلكتروني صالح';
+            messageDiv.textContent = 'يرجى إدخال بريد إلكتروني صالح';
             return false;
         }
 
-        // التحقق من طول كلمة المرور
         if (password.length < 6) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
+            messageDiv.textContent = 'يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
             return false;
         }
 
         return true;
     };
 
-    const saveUsername = () => {
-        const username = usernameInput.value.trim();
-        localStorage.setItem('username', username);
-    };
-
     loginBtn.addEventListener('click', async () => {
         if (!validateInputs()) {
-            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
+            return;
         }
 
-        saveUsername(); // حفظ اسم المستخدم في التخزين المؤقت
-
+        const username = usernameInput.value.trim();
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            localStorage.setItem('username', username); // تخزين اسم المستخدم في localStorage
             messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
             setTimeout(() => window.location.href = 'https://hussaindev10.github.io/postss/', 2000);
         } catch (error) {
@@ -77,16 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     signupBtn.addEventListener('click', async () => {
         if (!validateInputs()) {
-            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
+            return;
         }
 
-        saveUsername(); // حفظ اسم المستخدم في التخزين المؤقت
-
+        const username = usernameInput.value.trim();
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
+            localStorage.setItem('username', username); // تخزين اسم المستخدم في localStorage
             messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
             setTimeout(() => window.location.href = 'https://hussaindev10.github.io/postss/', 2000);
         } catch (error) {
