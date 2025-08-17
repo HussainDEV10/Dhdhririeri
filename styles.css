@@ -1,54 +1,77 @@
 /* إعدادات الخط Rubik */
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
 
-
+/* تنسيق الجسم */
 body {
     font-family: 'Rubik', sans-serif;
     display: flex;
+    flex-direction: column; /* ترتيب العناصر عمودياً */
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
     background-color: #f4f4f4;
-}
-
-.login-container {
-    width: 90%;
-    max-width: 400px;
     text-align: center;
 }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
+/* تنسيق العنوان */
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* تنسيق حقول الإدخال */
+input[type="email"], 
+input[type="password"],
+input[type="text"] {
+    width: 80%; /* عرض الحقل */
+    padding: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
-}
-
+    font-family: 'Rubik', sans-serif; /* إضافة خط Rubik */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل أسفل الحقول */
+} 
+/* تنسيق الأزرار */
 button {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
+    width: 84%; /* عرض الزر */
+    padding: 10px;
+    margin: 10px 0; /* تباعد بين الأزرار */
     border: none;
     border-radius: 4px;
     font-size: 16px;
+    font-family: 'Rubik', sans-serif; /* إضافة خط Rubik */
     color: #fff;
     cursor: pointer;
+    transition: opacity 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل أسفل الأزرار */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* إضافة ظل للنصوص داخل الأزرار */
 }
 
-#loginBtn { background-color: #007bff; }
-#signupBtn { background-color: #28a745; }
-
-.toggle-form span {
-    color: #007bff;
-    cursor: pointer;
-    text-decoration: underline;
+button:hover {
+    opacity: 0.9;
 }
 
+button#loginBtn {
+    background-color: #007bff; /* لون أزرق */
+}
+
+button#signupBtn {
+    background-color: #28a745; /* لون أخضر */
+}
+
+/* تنسيق النصوص داخل حقول الإدخال والأزرار */
+input::placeholder {
+    font-family: 'Rubik', sans-serif; /* إضافة خط Rubik للنص داخل حقول الإدخال */
+}
+
+/* تنسيق الرسائل */
 .message {
-    color: red;
-    margin-top: 10px;
+    font-family: 'Rubik', sans-serif;
+    color: #000;
     font-size: 14px;
+    margin-top: 20px;
+    width: 80%; /* عرض الرسالة */
 }
