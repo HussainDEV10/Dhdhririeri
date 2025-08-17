@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
@@ -7,86 +8,57 @@ const firebaseConfig = {
     projectId: "facebookweb-2030",
     storageBucket: "facebookweb-2030.appspot.com",
     messagingSenderId: "912333220741",
-    appId: "1:912333220741:web:1c7425f4248b7465b45c67",
-    measurementId: "G-ZJ6M2D8T3M"
+    appId: "1:912333220741:web:1c7425f4248b7465b45c67"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-document.addEventListener('DOMContentLoaded', () => {
-    const usernameInput = document.getElementById('usernameInput');
-    const emailInput = document.getElementById('emailInput');
-    const passwordInput = document.getElementById('passwordInput');
-    const loginBtn = document.getElementById('loginBtn');
-    const signupBtn = document.getElementById('signupBtn');
-    const messageDiv = document.createElement('div');
-    document.body.appendChild(messageDiv);
+const loginForm = document.getElementById('loginForm');
+const signupForm = document.getElementById('signupForm');
+const messageDiv = document.getElementById('message');
 
-    const validateInputs = () => {
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        // التحقق من الحقول الفارغة
-        if (email === '' || password === '' || usernameInput.value.trim() === '') {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ جميع الحقول';
-            return false;
-        }
-
-        // التحقق من صحة البريد الإلكتروني
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال بريد إلكتروني صالح';
-            return false;
-        }
-
-        // التحقق من طول كلمة المرور
-        if (password.length < 6) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
-            return false;
-        }
-
-        return true;
-    };
-
-    const saveUsernameAndRedirect = () => {
-        const username = usernameInput.value.trim();
-        localStorage.setItem('username', username);
-        window.location.href = 'https://hussaindev10.github.io/postss/';  // تأكد من استخدام المسار الصحيح لصفحة المنشورات
-    };
-
-    loginBtn.addEventListener('click', async () => {
-        if (!validateInputs()) {
-            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
-        }
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
-            saveUsernameAndRedirect();
-        } catch (error) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول: ' + error.message;
-        }
-    });
-
-    signupBtn.addEventListener('click', async () => {
-        if (!validateInputs()) {
-            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
-        }
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
-            saveUsernameAndRedirect();
-        } catch (error) {
-            messageDiv.textContent = 'خطأ في إنشاء الحساب: ' + error.message;
-        }
-    });
+document.getElementById('showSignup').addEventListener('click', () => {
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
 });
-        
+
+document.getElementById('showLogin').addEventListener('click', () => {
+    signupForm.style.display = 'none';
+    loginForm.style.display = 'block';
+});
+
+// تسجيل الدخول
+document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    if(!email || !password) { messageDiv.textContent = 'يرجى ملء جميع الحقول'; return; }
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'https://hussaindev10.github.io/postss/';
+    } catch (err) {
+        messageDiv.textContent = err.message;
+    }
+});
+
+// إنشاء حساب
+document.getElementById('signupBtn').addEventListener('click', async () => {
+    const username = document.getElementById('signupUsername').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value.trim();
+    const confirm = document.getElementById('signupConfirmPassword').value.trim();
+
+    if(!username || !email || !password || !confirm) { messageDiv.textContent = 'يرجى ملء جميع الحقول'; return; }
+    if(password.length<6){ messageDiv.textContent='كلمة المرور يجب أن تحتوي 6 أحرف على الأقل'; return; }
+    if(password!==confirm){ messageDiv.textContent='كلمة المرور والتأكيد غير متطابقين'; return; }
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, 'users', userCredential.user.uid), {username,email});
+        window.location.href = 'https://hussaindev10.github.io/postss/';
+    } catch(err) {
+        messageDiv.textContent = err.message;
+    }
+});
