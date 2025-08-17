@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>تسجيل دخول</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Postary - تسجيل الدخول</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Postary تسجيل الدخول إلى</h1>
-    <input type="text" id="usernameInput" name="user_name" placeholder="اسم المستخدم">
-    <input type="email" id="emailInput" name="user_email" autocomplete="email" placeholder="البريد الإلكتروني">
-    <input type="password" id="passwordInput" name="user_password" autocomplete="current-password" placeholder="كلمة المرور">
-    <button id="loginBtn">تسجيل الدخول</button>
-    <button id="signupBtn">إنشاء حساب</button>
-    <script type="module" src="script.js"></script>
+<div class="login-container">
+    <h1>تسجيل الدخول</h1>
+
+    <!-- نموذج تسجيل الدخول -->
+    <div id="loginForm">
+        <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
+        <input type="password" id="loginPassword" placeholder="كلمة المرور">
+        <button id="loginBtn">تسجيل الدخول</button>
+        <p class="toggle-form">ليس لديك حساب؟ <span id="showSignup">إنشاء حساب جديد</span></p>
+    </div>
+
+    <!-- نموذج إنشاء الحساب (مخفي في البداية) -->
+    <div id="signupForm" style="display:none;">
+        <input type="text" id="signupUsername" placeholder="اسم المستخدم">
+        <input type="email" id="signupEmail" placeholder="البريد الإلكتروني">
+        <input type="password" id="signupPassword" placeholder="كلمة المرور">
+        <input type="password" id="signupConfirmPassword" placeholder="تأكيد كلمة المرور">
+        <button id="signupBtn">إنشاء الحساب</button>
+        <p class="toggle-form">لديك حساب؟ <span id="showLogin">تسجيل الدخول</span></p>
+    </div>
+
+    <div id="message" class="message"></div>
+</div>
+
+<script type="module" src="script.js"></script>
 </body>
 </html>
