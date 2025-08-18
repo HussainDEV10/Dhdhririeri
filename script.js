@@ -1,5 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { 
+    getFirestore, 
+    doc, 
+    setDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBwIhzy0_RBqhMBlvJxbs5_760jP-Yv2fw",
@@ -13,6 +22,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', () => {
     const usernameInput = document.getElementById('usernameInput');
@@ -26,67 +36,77 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateInputs = () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
+        const username = usernameInput.value.trim();
 
-        // التحقق من الحقول الفارغة
-        if (email === '' || password === '' || usernameInput.value.trim() === '') {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى ملئ جميع الحقول';
+        if (!username || !email || !password) {
+            messageDiv.textContent = 'جميع الحقول مطلوبة';
             return false;
         }
 
-        // التحقق من صحة البريد الإلكتروني
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال بريد إلكتروني صالح';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            messageDiv.textContent = 'بريد إلكتروني غير صالح';
             return false;
         }
 
-        // التحقق من طول كلمة المرور
         if (password.length < 6) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول، يرجى إدخال كلمة مرور تحتوي على 6 أحرف أو أكثر';
+            messageDiv.textContent = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
             return false;
         }
 
         return true;
     };
 
-    const saveUsernameAndRedirect = () => {
-        const username = usernameInput.value.trim();
-        localStorage.setItem('username', username);
-        window.location.href = 'https://hussaindev10.github.io/postss/';  // تأكد من استخدام المسار الصحيح لصفحة المنشورات
+    const createUserDocument = async (user, username) => {
+        await setDoc(doc(db, "users", user.uid), {
+            username: username,
+            email: user.email,
+            createdAt: new Date(),
+            lastLogin: new Date()
+        });
     };
 
-    loginBtn.addEventListener('click', async () => {
-        if (!validateInputs()) {
-            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
-        }
+    const handleAuthSuccess = (user, username) => {
+        localStorage.setItem('username', username);
+        localStorage.setItem('email', user.email);
+        localStorage.setItem('uid', user.uid);
+        window.location.href = 'https://hussaindev10.github.io/postss/';
+    };
+
+    signupBtn.addEventListener('click', async () => {
+        if (!validateInputs()) return;
 
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
+        const username = usernameInput.value.trim();
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            messageDiv.textContent = 'تسجيل الدخول ناجح، سيتم الانتقال الآن...';
-            saveUsernameAndRedirect();
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            await createUserDocument(userCredential.user, username);
+            handleAuthSuccess(userCredential.user, username);
         } catch (error) {
-            messageDiv.textContent = 'خطأ في تسجيل الدخول: ' + error.message;
+            messageDiv.textContent = `خطأ في التسجيل: ${error.message}`;
         }
     });
 
-    signupBtn.addEventListener('click', async () => {
-        if (!validateInputs()) {
-            return; // إيقاف التنفيذ إذا كانت المدخلات غير صحيحة
-        }
+    loginBtn.addEventListener('click', async () => {
+        if (!validateInputs()) return;
 
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
+        const username = usernameInput.value.trim();
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            messageDiv.textContent = 'إنشاء الحساب ناجح، سيتم الانتقال الآن...';
-            saveUsernameAndRedirect();
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            
+            // عند تسجيل الدخول، نتحقق من وجود المستند في Firestore
+            const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
+            if (!userDoc.exists()) {
+                await createUserDocument(userCredential.user, username);
+            }
+            
+            handleAuthSuccess(userCredential.user, username);
         } catch (error) {
-            messageDiv.textContent = 'خطأ في إنشاء الحساب: ' + error.message;
+            messageDiv.textContent = `خطأ في تسجيل الدخول: ${error.message}`;
         }
     });
 });
-        
